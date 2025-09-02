@@ -8,8 +8,16 @@ const server = createServer((req, res) => {
     const pathname = (req.url ?? '/').split('?')[0];
 
     function errorMessage(statusCode:number, error:ErrorBody):void{
-        res.writeHead(statusCode, {'Content-Type': 'application/json; charset=utf-8'});
+        if (res.writableEnded) return;
+        if (!res.headersSent) res.writeHead(statusCode, {'Content-Type': 'application/json; charset=utf-8'});
         res.end(JSON.stringify(error));
+    }
+
+    function ok(payload: unknown, status = 200) {
+        if (res.writableEnded) return;
+        res.statusCode = status;
+        res.setHeader("Content-Type", "application/json; charset=utf-8");
+        res.end(JSON.stringify(payload));
     }
     
     if (req.method === 'GET' && pathname === '/health'){
@@ -49,8 +57,8 @@ const server = createServer((req, res) => {
                         errorMessage(400, {error:'validation_error', issues: issues})
                         return
                     }
-                    res.writeHead(200, {'Content-Type': 'application/json; charset=utf-8'})
-                    res.end(payload);
+                    ok(payload, 200);
+                    return;
                 } catch {
                     errorMessage(400, {error:"invalid_json"});
                     return;
@@ -66,7 +74,8 @@ const server = createServer((req, res) => {
             return;
         }
     } else {
-        return errorMessage(404, {error: "not_found"});
+        errorMessage(404, {error: "not_found"});
+        return;
     }
 });
 
