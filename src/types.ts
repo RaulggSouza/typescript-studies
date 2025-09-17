@@ -19,16 +19,8 @@ export type ErrorBody =
     | {error: ErrorCodeBase}
 
 
-type Issue = {
+export type Issue = {
     path:string,
     message:string,
     code:string
-}
-
-export function issues_to_list(error:z.ZodError): Issue[]{
-    return error.issues.map(i => ({
-        path: i.path.join("."),
-        message: i.message,
-        code: i.code
-    }));
 }
