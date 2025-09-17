@@ -7,7 +7,7 @@ export class ContentTypeGuard implements CanActivate {
         const ct = (req.headers['content-type'] || '').toLowerCase();
         if(!ct.includes('application/json')) {
             throw new HttpException(
-                {error: 'unsuported_media_type'},
+                {error: 'unsupported_media_type'},
                 HttpStatus.UNSUPPORTED_MEDIA_TYPE
             );
         }

@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Header, HttpException, HttpStatus, UseGuards, UsePipes } from "@nestjs/common";
+import { All, Controller, Post, Get, Body, Header, HttpException, HttpStatus, UseGuards, UsePipes } from "@nestjs/common";
 import { ContentTypeGuard } from "../http/content-type.guard.js";
 import { ZodValidationPipe } from "../pipes/zod-validation.pipe.js";
 import { type EchoBody, EchoSchema } from "../../types.js";
@@ -13,8 +13,8 @@ export class EchoController {
         return body;
     }
 
-    @Get()
-    @Header('Allow', 'POST')
+    @All()
+    @Header('Allow', 'Post')
     notAllowed(){
         throw new HttpException(
             {error : 'method_not_allowed'},
