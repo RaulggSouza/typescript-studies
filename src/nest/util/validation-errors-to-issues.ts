@@ -1,5 +1,5 @@
 import type { ValidationError } from "@nestjs/common";
-import type { Issue } from "../echo/echo-error.type.js";
+import type { Issue } from "../echo/api-error.type.js";
 
 export function validation_errors_to_list(errors: ValidationError[]): Issue[]{
     const walk = (e: ValidationError, parent = ''): Issue[] => {
