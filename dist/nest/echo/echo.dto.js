@@ -7,21 +7,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Controller, Get, Header } from "@nestjs/common";
-let HealthController = class HealthController {
-    getHealth() {
-        return { status: 'ok' };
-    }
-};
+import { Transform, Type } from "class-transformer";
+import { IsInt, IsString, Min, MinLength } from "class-validator";
+export class EchoDto {
+    hello;
+    n;
+}
 __decorate([
-    Get(),
-    Header('Content-Type', 'application/json; charset=utf-8'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], HealthController.prototype, "getHealth", null);
-HealthController = __decorate([
-    Controller('health')
-], HealthController);
-export { HealthController };
-//# sourceMappingURL=health.controller.js.map
+    IsString(),
+    MinLength(1),
+    Transform(({ value }) => (typeof value === 'string' ? value.trim() : value)),
+    __metadata("design:type", String)
+], EchoDto.prototype, "hello", void 0);
+__decorate([
+    Type(() => Number),
+    IsInt(),
+    Min(0),
+    __metadata("design:type", Number)
+], EchoDto.prototype, "n", void 0);
+//# sourceMappingURL=echo.dto.js.map

@@ -10,9 +10,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-import { Controller, Post, Get, Body, Header, HttpException, HttpStatus } from "@nestjs/common";
-let EchoController = class EchoController {
+var EchoController_1;
+import 'reflect-metadata';
+import { Reflector } from '@nestjs/core';
+import { All, Controller, Post, Body, Header, HttpException, HttpStatus, UseGuards, ValidationPipe } from "@nestjs/common";
+import { ContentTypeGuard } from "../http/content-type.guard.js";
+import { EchoDto } from './echo.dto.js';
+let EchoController = EchoController_1 = class EchoController {
+    constructor() {
+        const types = Reflect.getMetadata('design:paramtypes', EchoController_1.prototype, 'postEcho');
+        console.log('param types =>', types);
+    }
     postEcho(body) {
+        console.log(body instanceof EchoDto);
         return body;
     }
     notAllowed() {
@@ -22,19 +32,25 @@ let EchoController = class EchoController {
 __decorate([
     Post(),
     Header('Content-Type', 'application/json; charset=utf-8'),
-    __param(0, Body()),
+    __param(0, Body(new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        transform: true,
+    }))),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [EchoDto]),
     __metadata("design:returntype", void 0)
 ], EchoController.prototype, "postEcho", null);
 __decorate([
-    Get(),
-    Header('Allow', 'POST'),
+    All(),
+    Header('Allow', 'Post'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], EchoController.prototype, "notAllowed", null);
-EchoController = __decorate([
-    Controller('echo')
+EchoController = EchoController_1 = __decorate([
+    Controller('echo'),
+    __metadata("design:paramtypes", [])
 ], EchoController);
 export { EchoController };
+//# sourceMappingURL=echo.controller.js.map

@@ -20,11 +20,10 @@ export class HttpErrorFilter implements ExceptionFilter{
                 body = { error: String(response)};
             }
         }
-        console.log('error' in response)
+        
         if (
             exception instanceof HttpException && 
             typeof exception.getResponse() === 'object' &&
-            response !== null &&
             exception.getStatus() === 404
             ){
                 status = 404;
